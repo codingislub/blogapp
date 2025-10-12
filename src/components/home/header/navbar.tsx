@@ -1,13 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { ModeToggle } from "../../dark-mode";
 import Link from "next/link";
 import { SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import SearchInput from "./search-input";
+import Image from "next/image";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -20,12 +20,22 @@ export function Navbar() {
           <div className="flex items-center gap-8">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
-              <span className="text-2xl font-bold">
-                <span className="bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 bg-clip-text text-transparent">
-                  Byte
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center p-1">
+                  <Image 
+                    src="/emerald-logo.svg" 
+                    alt="TechVerse Logo" 
+                    width={24} 
+                    height={24}
+                    className="filter brightness-0 invert"
+                  />
+                </div>
+                <span className="text-xl font-bold">
+                  <span className="bg-gradient-to-r from-emerald-600 to-emerald-600 dark:from-emerald-400 dark:to-emerald-400 bg-clip-text text-transparent">
+                    TechVerse
+                  </span>
                 </span>
-                <span className="text-foreground">Code</span>
-              </span>
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
@@ -60,7 +70,9 @@ export function Navbar() {
           {/* Right Section - Search & Actions */}
           <div className="flex items-center gap-4">
             {/* Search Bar (Desktop) */}
-            <SearchInput/>
+            <Suspense fallback={<div className="w-48 h-9 bg-muted animate-pulse rounded-md" />}>
+              <SearchInput/>
+            </Suspense>
 
             {/* Theme Toggle */}
             <ModeToggle />
@@ -101,14 +113,9 @@ export function Navbar() {
           <div className="md:hidden py-4 space-y-4 border-t">
             {/* Search Bar (Mobile) */}
             <div className="px-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search articles..."
-                  className="pl-10 w-full focus-visible:ring-1"
-                />
-              </div>
+              <Suspense fallback={<div className="w-full h-9 bg-muted animate-pulse rounded-md" />}>
+                <SearchInput/>
+              </Suspense>
             </div>
 
             {/* Mobile Navigation Links */}

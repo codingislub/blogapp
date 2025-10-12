@@ -10,6 +10,7 @@ import {
   Settings,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -39,8 +40,17 @@ function DashboardSidebar({ closeSheet }: { closeSheet?: () => void }) {
   return (
     <div className="h-full px-4 py-6">
       <div className="flex items-center gap-2 mb-8 px-2">
-        <Link href={"/"}>
-        <span className="text-xl font-bold">ByteCode</span>
+        <Link href={"/"} className="flex items-center gap-2">
+          <div className="w-6 h-6 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center p-1">
+            <Image 
+              src="/emerald-logo.svg" 
+              alt="TechVerse Logo" 
+              width={16} 
+              height={16}
+              className="brightness-0 invert"
+            />
+          </div>
+          <span className="text-xl font-bold">TechVerse</span>
         </Link>
       </div>
       <nav className="space-y-1">
