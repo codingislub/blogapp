@@ -86,3 +86,6 @@ Deploy easily on [Vercel](https://vercel.com):
 2. Create a feature branch
 3. Make your changes
 4. Submit a pull request
+
+
+//next15 ts zod prisma(postgres neon) react 19 clerk cloudinary 
