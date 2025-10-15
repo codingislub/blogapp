@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
+
+// Force dynamic rendering for the entire app to handle Clerk SSR issues
+export const dynamic = 'force-dynamic';
  
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -32,9 +32,11 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint
+        continue-on-error: false
 
       - name: Type check
         run: npx tsc --noEmit
+        continue-on-error: false
 
       - name: Check Prisma schema
         run: npx prisma validate
@@ -74,7 +76,13 @@ jobs:
         run: npx prisma generate
 
       - name: Build application
-        run: npm run build
+        run: |
+          echo "Starting Next.js build..."
+          npm run build
+          echo "Build completed successfully"
+        env:
+          CI: true
+          NEXT_TELEMETRY_DISABLED: 1
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
