@@ -6,28 +6,33 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 
 export async function BlogDashboard() {
-  const [articles, totalComments] = await Promise.all([
-    prisma.articles.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-      include: {
-        comments: true,
-        author: {
-          select: {
-            name: true,
-            email: true,
-            imageUrl: true,
+  try {
+    console.log('Dashboard: Attempting to fetch data...')
+    console.log('Dashboard: Database URL exists:', !!process.env.DATABASE_URL)
+    
+    const [articles, totalComments] = await Promise.all([
+      prisma.articles.findMany({
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          comments: true,
+          author: {
+            select: {
+              name: true,
+              email: true,
+              imageUrl: true,
+            },
           },
         },
-      },
-    }),
-    prisma.comment.count(),
-  ]);
+      }),
+      prisma.comment.count(),
+    ]);
 
-  return (
-    <main className="flex-1 p-4 md:p-8">
-      {/* Header */}
+    console.log('Dashboard: Successfully fetched data')
+
+    return (
+      <main className="flex-1 p-4 md:p-8">{/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Blog Dashboard</h1>
@@ -94,5 +99,27 @@ export async function BlogDashboard() {
       {/* Recent Articles */}
       <RecentArticles articles={articles} />
     </main>
-  );
+    );
+  } catch (error) {
+    console.error('Dashboard: Database connection error:', error)
+    
+    return (
+      <main className="flex-1 p-4 md:p-8">
+        <div className="text-center py-12">
+          <h3 className="text-lg font-medium text-red-600">Unable to load dashboard</h3>
+          <p className="text-sm text-muted-foreground mt-2">
+            Database connection failed. Please check your environment variables.
+          </p>
+          <details className="mt-4 text-left max-w-md mx-auto">
+            <summary className="cursor-pointer text-sm text-gray-500">
+              Error Details
+            </summary>
+            <pre className="mt-2 text-xs bg-gray-100 p-2 rounded overflow-auto">
+              {error instanceof Error ? error.message : String(error)}
+            </pre>
+          </details>
+        </div>
+      </main>
+    );
+  }
 }

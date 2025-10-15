@@ -7,6 +7,9 @@ import Image from "next/image";
 
 export async function TopArticles() {
   try {
+    console.log('Attempting to fetch articles...')
+    console.log('Database URL exists:', !!process.env.DATABASE_URL)
+    
     const articles = await prisma.articles.findMany({
       orderBy: {
         createdAt: "desc",
@@ -22,6 +25,8 @@ export async function TopArticles() {
         },
       },
     });
+
+    console.log('Successfully fetched articles:', articles.length)
 
     if (articles.length === 0) {
       return (
