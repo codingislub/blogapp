@@ -51,5 +51,5 @@ model Like {
   articleId String
   createdAt DateTime @default(now())
 
-  // @@unique([userId, articleId]) // Ensures a user can like an article only once
+  @@unique([userId, articleId]) // Ensures a user can like an article only once
 }
