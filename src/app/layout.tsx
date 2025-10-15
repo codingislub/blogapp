@@ -41,8 +41,56 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <ClerkProvider>
+  // Ensure Clerk environment variables are available
+  const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  
+  if (!clerkPublishableKey) {
+    console.error('Missing NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY');
+    return (
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          <link rel="icon" href="/emerald-logo.svg" type="image/svg+xml" />
+          <link rel="shortcut icon" href="/emerald-logo.svg" />
+        </head>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <div style={{ padding: '20px', textAlign: 'center' }}>
+            <h1>Configuration Error</h1>
+            <p>Missing authentication configuration. Please check environment variables.</p>
+            {children}
+          </div>
+        </body>
+      </html>
+    );
+  }
+
+  try {
+    return (
+      <ClerkProvider publishableKey={clerkPublishableKey}>
+        <html lang="en" suppressHydrationWarning>
+          <head>
+            <link rel="icon" href="/emerald-logo.svg" type="image/svg+xml" />
+            <link rel="shortcut icon" href="/emerald-logo.svg" />
+          </head>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            > 
+              <div>{children}</div>
+            </ThemeProvider>
+          </body>
+        </html>
+      </ClerkProvider>
+    );
+  } catch (error) {
+    console.error('Layout error:', error)
+    
+    // Fallback layout without Clerk
+    return (
       <html lang="en" suppressHydrationWarning>
         <head>
           <link rel="icon" href="/emerald-logo.svg" type="image/svg+xml" />
@@ -51,16 +99,17 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          > 
-            <div>{children}</div>
-          </ThemeProvider>
+          <div style={{ padding: '20px', textAlign: 'center' }}>
+            <h1>Authentication Service Error</h1>
+            <p>There was an issue initializing the authentication system.</p>
+            <details>
+              <summary>Error Details</summary>
+              <pre>{error instanceof Error ? error.message : String(error)}</pre>
+            </details>
+            {children}
+          </div>
         </body>
       </html>
-    </ClerkProvider>
-  );
+    );
+  }
 }
