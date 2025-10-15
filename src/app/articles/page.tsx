@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   description: "Browse all articles on TechVerse. Discover insights on technology, programming, and innovation.",
 };
 
+// Force dynamic rendering to prevent prerendering during build
+export const dynamic = 'force-dynamic';
+
 type SearchPageProps = {
   searchParams: Promise<{ search?: string; page?: string }>;
 };

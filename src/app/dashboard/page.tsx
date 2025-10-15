@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   description: "Manage your TechVerse blog content, articles, and analytics.",
 };
 
+// Force dynamic rendering to prevent prerendering during build
+export const dynamic = 'force-dynamic';
+
 const page = () => {
   return (
     <div>
