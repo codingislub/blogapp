@@ -1,39 +1,12 @@
 import { FileText, MessageCircle, PlusCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import RecentArticles from "./recent-articles";
-import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { DashboardFallback } from "./dashboard-fallback";
 
-export async function BlogDashboard() {
-  try {
-    console.log('Dashboard: Attempting to fetch data...')
-    console.log('Dashboard: Database URL exists:', !!process.env.DATABASE_URL)
-    
-    const [articles, totalComments] = await Promise.all([
-      prisma.articles.findMany({
-        orderBy: {
-          createdAt: "desc",
-        },
-        include: {
-          comments: true,
-          author: {
-            select: {
-              name: true,
-              email: true,
-              imageUrl: true,
-            },
-          },
-        },
-      }),
-      prisma.comment.count(),
-    ]);
-
-    console.log('Dashboard: Successfully fetched data')
-
-    return (
-      <main className="flex-1 p-4 md:p-8">{/* Header */}
+export function DashboardFallback() {
+  return (
+    <main className="flex-1 p-4 md:p-8">
+      {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Blog Dashboard</h1>
@@ -49,9 +22,19 @@ export async function BlogDashboard() {
         </Link>
       </div>
 
-      {/* Quick Stats */}
+      {/* Database Error Notice */}
+      <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-8">
+        <h3 className="text-yellow-800 dark:text-yellow-200 font-medium mb-2">
+          ⚠️ Database Connection Issue
+        </h3>
+        <p className="text-yellow-700 dark:text-yellow-300 text-sm">
+          Unable to load dashboard data. Please check your database connection and try again.
+        </p>
+      </div>
+
+      {/* Quick Stats - Disabled */}
       <div className="grid gap-4 md:grid-cols-3 mb-8">
-        <Card>
+        <Card className="opacity-50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total Articles
@@ -59,14 +42,14 @@ export async function BlogDashboard() {
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{articles.length}</div> 
+            <div className="text-2xl font-bold">--</div>
             <p className="text-xs text-muted-foreground mt-1">
-              +5 from last month
+              Data unavailable
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="opacity-50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total Comments
@@ -74,14 +57,14 @@ export async function BlogDashboard() {
             <MessageCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalComments}</div>
+            <div className="text-2xl font-bold">--</div>
             <p className="text-xs text-muted-foreground mt-1">
-              12 awaiting moderation
+              Data unavailable
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="opacity-50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Avg. Reading Time
@@ -89,23 +72,30 @@ export async function BlogDashboard() {
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">4.2m</div>
+            <div className="text-2xl font-bold">--</div>
             <p className="text-xs text-muted-foreground mt-1">
-              +0.8m from last month
+              Data unavailable
             </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Recent Articles */}
-      <RecentArticles articles={articles} />
+      {/* Recent Articles - Empty State */}
+      <Card className="mb-8">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>Recent Articles</CardTitle>
+            <Button variant="ghost" size="sm" className="text-muted-foreground" disabled>
+              View All →
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8">
+            <p className="text-muted-foreground">Unable to load articles due to database connection issue.</p>
+          </div>
+        </CardContent>
+      </Card>
     </main>
-    );
-  } catch (error) {
-    console.error('Dashboard: Database connection error:', error)
-    console.error('Dashboard: Falling back to error state')
-    
-    // Return fallback component instead of error message
-    return <DashboardFallback />;
-  }
+  );
 }
