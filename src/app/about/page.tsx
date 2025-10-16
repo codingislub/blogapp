@@ -8,7 +8,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About - TechVerse",
-  description: "Learn about TechVerse, our mission, team, and commitment to sharing technology insights and innovation.",
+  description: "Learn about TechVerse, our mission, team, and commitment to sharing technology insights and innovation. Auto-deployment is working! 🚀",
 };
 
 const teamMembers = [
