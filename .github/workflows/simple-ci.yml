@@ -79,10 +79,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: test-build
     if: github.ref == 'refs/heads/main'
-    environment: vercel
     
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Debug Vercel secrets
+        run: |
+          echo "Checking Vercel secrets availability..."
+          echo "VERCEL_TOKEN exists: $([[ -n '${{ secrets.VERCEL_TOKEN }}' ]] && echo 'YES' || echo 'NO')"
+          echo "VERCEL_ORG_ID exists: $([[ -n '${{ secrets.VERCEL_ORG_ID }}' ]] && echo 'YES' || echo 'NO')"
+          echo "VERCEL_PROJECT_ID exists: $([[ -n '${{ secrets.VERCEL_PROJECT_ID }}' ]] && echo 'YES' || echo 'NO')"
       
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
