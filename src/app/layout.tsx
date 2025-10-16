@@ -29,8 +29,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const publishableKey = env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  
+  // If no publishable key is available, render without ClerkProvider (for build time)
+  if (!publishableKey) {
+    return (
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          <link rel="icon" href="/emerald-logo.svg" type="image/svg+xml" />
+          <link rel="shortcut icon" href="/emerald-logo.svg" />
+        </head>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    );
+  }
+  
   return (
-    <ClerkProvider publishableKey={env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider publishableKey={publishableKey}>
       <html lang="en" suppressHydrationWarning>
         <head>
           <link rel="icon" href="/emerald-logo.svg" type="image/svg+xml" />

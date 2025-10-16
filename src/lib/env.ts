@@ -11,6 +11,15 @@ export const env = {
   NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL || '/dashboard',
 }
 
+// Log environment variable status during build
+console.log('Environment check:', {
+  hasPublishableKey: !!env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+  hasDatabaseUrl: !!env.DATABASE_URL,
+  nodeEnv: process.env.NODE_ENV,
+  vercel: process.env.VERCEL,
+  ci: process.env.CI
+});
+
 // Log missing environment variables during build (but not in production)
 if (process.env.NODE_ENV !== 'production') {
   const missing = Object.entries(env)
