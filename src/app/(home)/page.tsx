@@ -13,7 +13,7 @@ const page = async () => {
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="mb-16 text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center rounded-full bg-teal-100 dark:bg-teal-900/30 px-6 py-2 text-sm font-medium text-teal-700 dark:text-teal-300 mb-6">
-              ✨ Handpicked Content
+              ✨ Handpicked Content automation
             </div>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-300 bg-clip-text text-transparent mb-6">
               Featured Articles
