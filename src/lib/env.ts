@@ -11,22 +11,12 @@ export const env = {
   NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL || '/dashboard',
 }
 
-// Log environment variable status during build
-console.log('Environment check:', {
-  hasPublishableKey: !!env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-  hasDatabaseUrl: !!env.DATABASE_URL,
-  nodeEnv: process.env.NODE_ENV,
-  vercel: process.env.VERCEL,
-  ci: process.env.CI
-});
-
-// Log missing environment variables during build (but not in production)
-if (process.env.NODE_ENV !== 'production') {
-  const missing = Object.entries(env)
-    .filter(([key, value]) => !value && key !== 'CLERK_SECRET_KEY') // CLERK_SECRET_KEY is server-only
-    .map(([key]) => key);
+// Validate critical environment variables in development
+if (process.env.NODE_ENV === 'development') {
+  const required = ['NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY', 'DATABASE_URL'];
+  const missing = required.filter(key => !process.env[key]);
   
   if (missing.length > 0) {
-    console.warn('Missing environment variables:', missing);
+    console.warn('Missing required environment variables:', missing);
   }
 }
