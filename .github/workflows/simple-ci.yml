@@ -49,6 +49,16 @@ jobs:
           NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: /dashboard
           NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: /dashboard
           
+      - name: Debug environment
+        run: |
+          echo "Environment variables check:"
+          echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY present: $([[ -n '${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}' ]] && echo 'YES' || echo 'NO')"
+          echo "DATABASE_URL present: $([[ -n '${{ secrets.DATABASE_URL }}' ]] && echo 'YES' || echo 'NO')"
+          echo "NODE_ENV: $NODE_ENV"
+          echo "CI: $CI"
+        env:
+          NODE_ENV: production
+          
       - name: Build application
         run: npm run build
         env:
