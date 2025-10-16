@@ -36,6 +36,8 @@ jobs:
 
       - name: Check Prisma schema
         run: npx prisma validate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
   # Build Job
   build:
