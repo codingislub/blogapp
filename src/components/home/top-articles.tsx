@@ -4,13 +4,9 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
-import { TopArticlesFallback } from "./top-articles-fallback";
 
 export async function TopArticles() {
   try {
-    console.log('TopArticles: Attempting to fetch articles...')
-    console.log('TopArticles: Database URL exists:', !!process.env.DATABASE_URL)
-    
     const articles = await prisma.articles.findMany({
       orderBy: {
         createdAt: "desc",
@@ -26,8 +22,6 @@ export async function TopArticles() {
         },
       },
     });
-
-    console.log('TopArticles: Successfully fetched articles:', articles.length)
 
     if (articles.length === 0) {
       return (
@@ -130,10 +124,12 @@ export async function TopArticles() {
     </div>
     );
   } catch (error) {
-    console.error('TopArticles: Database connection error:', error);
-    console.error('TopArticles: Falling back to static content');
-    
-    // Return fallback component instead of error message
-    return <TopArticlesFallback />;
+    console.error('Database connection error:', error);
+    return (
+      <div className="text-center py-12">
+        <h3 className="text-lg font-medium text-muted-foreground">Unable to load articles</h3>
+        <p className="text-sm text-muted-foreground mt-2">Please try refreshing the page</p>
+      </div>
+    );
   }
 }

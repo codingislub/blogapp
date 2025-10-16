@@ -13,9 +13,7 @@ const nextConfig: NextConfig = {
         hostname: 'res.cloudinary.com'
       }
     ]
-  },
-  // Handle Clerk in server components
-  serverExternalPackages: ['@clerk/nextjs']
+  }
 };
 
 export default nextConfig;

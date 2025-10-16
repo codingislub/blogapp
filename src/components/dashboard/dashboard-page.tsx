@@ -4,36 +4,30 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import RecentArticles from "./recent-articles";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { DashboardFallback } from "./dashboard-fallback";
 
 export async function BlogDashboard() {
-  try {
-    console.log('Dashboard: Attempting to fetch data...')
-    console.log('Dashboard: Database URL exists:', !!process.env.DATABASE_URL)
-    
-    const [articles, totalComments] = await Promise.all([
-      prisma.articles.findMany({
-        orderBy: {
-          createdAt: "desc",
-        },
-        include: {
-          comments: true,
-          author: {
-            select: {
-              name: true,
-              email: true,
-              imageUrl: true,
-            },
+  const [articles, totalComments] = await Promise.all([
+    prisma.articles.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        comments: true,
+        author: {
+          select: {
+            name: true,
+            email: true,
+            imageUrl: true,
           },
         },
-      }),
-      prisma.comment.count(),
-    ]);
+      },
+    }),
+    prisma.comment.count(),
+  ]);
 
-    console.log('Dashboard: Successfully fetched data')
-
-    return (
-      <main className="flex-1 p-4 md:p-8">{/* Header */}
+  return (
+    <main className="flex-1 p-4 md:p-8">
+      {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Blog Dashboard</h1>
@@ -100,12 +94,5 @@ export async function BlogDashboard() {
       {/* Recent Articles */}
       <RecentArticles articles={articles} />
     </main>
-    );
-  } catch (error) {
-    console.error('Dashboard: Database connection error:', error)
-    console.error('Dashboard: Falling back to error state')
-    
-    // Return fallback component instead of error message
-    return <DashboardFallback />;
-  }
+  );
 }

@@ -5,9 +5,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React, { Suspense } from "react";
 
-// Force dynamic rendering to prevent prerendering during build
-export const dynamic = 'force-dynamic';
-
 const page = async () => {
   return (
     <main>

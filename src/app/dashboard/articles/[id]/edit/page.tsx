@@ -2,9 +2,6 @@ import EditArticlePage from '@/components/articles/edit-articles-page'
 import { prisma } from '@/lib/prisma'
  
 import React from 'react'
-
-// Force dynamic rendering to prevent prerendering during build
-export const dynamic = 'force-dynamic';
 type Props = {
     params:Promise<{id:string}>
 }
