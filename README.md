@@ -103,11 +103,3 @@ This is primarily my personal blog, but if you spot a bug or have a suggestion, 
 1. Open an issue describing what you found
 2. Fork the repo and create a pull request
 3. Just reach out to me directly
-
-## License
-
-This project is open source under the MIT License. Feel free to use any code that helps you build your own blog!
-
----
-
-Built with ❤️ by a developer who just wants to share knowledge and maybe help someone learn something new.
