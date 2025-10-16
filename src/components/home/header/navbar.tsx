@@ -46,12 +46,6 @@ export function Navbar() {
                 Articles
               </Link>
               <Link
-                href="/tutorials"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Tutorials
-              </Link>
-              <Link
                 href="/about"
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
@@ -113,13 +107,6 @@ export function Navbar() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Articles
-              </Link>
-              <Link
-                href="/tutorials"
-                className="block px-3 py-2 text-base font-medium text-foreground"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Tutorials
               </Link>
               <Link
                 href="/about"
